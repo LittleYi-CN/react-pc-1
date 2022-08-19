@@ -1,17 +1,22 @@
-import { Card, Form, Input, Checkbox, Button } from 'antd'
+import { Card, Form, Input, Checkbox, Button, message } from 'antd'
 import logo from '@/assets/logo.png'
 import './index.scss'
 import { useStore } from '@/store'
+import { useNavigate } from 'react-router-dom'
 
 function Login() {
   const {loginStore} = useStore()
-  function onFinish(values) {
-    loginStore.getToken({
+  const navigate = useNavigate()
+  async function onFinish(values) {
+    await loginStore.getToken({
       // mobile: values.username,
       // code: values.password
       mobile: '13811111111',
       code: '246810'
     })
+    // 跳转首页
+    navigate('/', {replace: true})
+    message.success('登录成功')
   }
   function onFinishFailed(err) {
     console.log(err)
