@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Layout from './pages/Layout';
 import Login from '@/pages/Login'
+import Layout from '@/pages/Layout'
+
 
 function App() {
   return (

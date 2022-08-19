@@ -129,3 +129,21 @@ module.exports = {
  "eject": "react-scripts eject"
 },
 ```
+
+## 5.@别名路径提示
+**实现步骤**  
+1. 在项目根目录创建`jsconfig.json`
+2. 在配置文件中添加配置
+
+```
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    }
+  }
+}
+```
