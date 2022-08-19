@@ -1,10 +1,17 @@
 import { Card, Form, Input, Checkbox, Button } from 'antd'
 import logo from '@/assets/logo.png'
 import './index.scss'
+import { useStore } from '@/store'
 
 function Login() {
+  const {loginStore} = useStore()
   function onFinish(values) {
-    console.log(values)
+    loginStore.getToken({
+      // mobile: values.username,
+      // code: values.password
+      mobile: '13811111111',
+      code: '246810'
+    })
   }
   function onFinishFailed(err) {
     console.log(err)
