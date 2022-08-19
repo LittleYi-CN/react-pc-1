@@ -9,12 +9,40 @@ function Login() {
         <img className='login-logo' src={logo} alt="" />
         <Form
           initialValues={{ remember: true }}
+          autoComplete="off"
+          validateTrigger={['onBlur', 'onChange']}
         >
-          <Form.Item>
+          <Form.Item
+            name='username'
+            rules={[
+              {
+                required: true,
+                message: '请输入手机号'
+              },
+              {
+                pattern: /^1[3-9]\d{9}$/,
+                message: '手机号码格式不对',
+                validateTrigger: 'onBlur'
+              }
+            ]}
+          >
             <Input size="large" placeholder='请输入手机号' />
           </Form.Item>
-          <Form.Item>
-            <Input size="large" placeholder='请输入验证码' />
+          <Form.Item
+            name='password'
+            rules={[
+              {
+                required: true,
+                message: '请输入密码'
+              },
+              {
+                len: 6,
+                message: '请输入6位密码',
+                validateTrigger: 'onBlur'
+              }
+            ]}
+          >
+            <Input.Password size="large" placeholder='请输入密码' />
           </Form.Item>
           <Form.Item
             name="remember"
