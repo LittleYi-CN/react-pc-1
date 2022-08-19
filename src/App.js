@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Login from '@/pages/Login'
 import Layout from '@/pages/Layout'
+import {AuthComponent} from '@/components/AuthComponent'
 
 
 function App() {
@@ -10,7 +11,13 @@ function App() {
       <div className="App">
         <Routes>
           {/* 创建路由对应关系 */}
-          <Route path="/" element={<Layout />}></Route>
+          {/* Layout需要鉴权处理 */}
+          {/* 这里的Layout不一定鞋子 要根据是否登录进行判断 */}
+          <Route path="/" element={
+            <AuthComponent>
+              <Layout />
+            </AuthComponent>
+          }></Route>
           <Route path="/login" element={<Login />}></Route>
         </Routes>
       </div>
