@@ -3,6 +3,12 @@ import logo from '@/assets/logo.png'
 import './index.scss'
 
 function Login() {
+  function onFinish(values) {
+    console.log(values)
+  }
+  function onFinishFailed(err) {
+    console.log(err)
+  }
   return (
     <div className='login'>
       <Card className='login-container'>
@@ -11,6 +17,8 @@ function Login() {
           initialValues={{ remember: true }}
           autoComplete="off"
           validateTrigger={['onBlur', 'onChange']}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
         >
           <Form.Item
             name='username'
