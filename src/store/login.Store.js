@@ -1,9 +1,9 @@
 // login module
 import { makeAutoObservable } from 'mobx'
-import { http } from '@/utils'
+import { http,setToken,getToken } from '@/utils'
 
 class LoginStore {
-  token = ''
+  token = getToken() || ''
   constructor() {
     // 响应式
     makeAutoObservable(this)
@@ -18,6 +18,8 @@ class LoginStore {
     // 存入token
     console.log(res.data)
     this.token = res.data.token
+    // 存入localStorage
+    setToken(this.token)
   }
 }
 
