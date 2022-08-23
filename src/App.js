@@ -1,7 +1,8 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, unstable_HistoryRouter as HistoryRouter } from 'react-router-dom'
 import Login from '@/pages/Login'
 import Layout from '@/pages/Layout'
 import {AuthComponent} from '@/components/AuthComponent'
+import {history} from './utils/history'
 
 import './App.css'
 
@@ -12,7 +13,7 @@ import Home from './pages/Home'
 function App() {
   return (
     // 路由配置
-    <BrowserRouter>
+    <HistoryRouter history={history}>
       <div className="App">
         <Routes>
           {/* 创建路由对应关系 */}
@@ -30,7 +31,7 @@ function App() {
           <Route path="/login" element={<Login />}></Route>
         </Routes>
       </div>
-    </BrowserRouter>
+    </HistoryRouter>
   );
 }
 
