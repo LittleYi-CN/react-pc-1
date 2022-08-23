@@ -1,6 +1,6 @@
 import { Layout, Menu, Popconfirm } from 'antd'
 import { HomeOutlined, DiffOutlined, EditOutlined, LogoutOutlined } from '@ant-design/icons'
-import { Outlet, Link, useLocation } from 'react-router-dom'
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
 import './index.scss'
 
 import {useStore} from '@/store'
@@ -11,10 +11,17 @@ const { Header, Sider} = Layout
 
 const GeekLayout = () => {
   const { pathname } = useLocation()
-  const {userStore} = useStore()
+  const {userStore, loginStore} = useStore()
   useEffect(() => {
     userStore.getUserInfo()
   }, [userStore])
+  // 确定退出
+  const navigate = useNavigate()
+  const onConfirm = () => {
+    // 退出登录 删除token 跳回登录
+    loginStore.loginOut()
+    navigate('/login')
+  }
   return (
     <Layout>
       <Header className="header">
@@ -22,7 +29,11 @@ const GeekLayout = () => {
         <div className="user-info">
           <span className="user-name">{userStore.userInfo.name}</span>
           <span className='user-logout'>
-            <Popconfirm title="是否确认退出？" okText="退出" cancelText="取消">
+            <Popconfirm
+              title="是否确认退出？"
+              okText="退出"
+              cancelText="取消"
+              onConfirm={onConfirm}>
               <LogoutOutlined />退出
             </Popconfirm>
           </span>
