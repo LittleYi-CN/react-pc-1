@@ -33,7 +33,7 @@ const Article = () => {
   }
 
   // 文章列表管理 统一管理数据 将来修改给setList传对象
-  const [list, setList] = useState({
+  const [articleData, setArticleData] = useState({
     list: [], // 文章列表
     count: 0
   })
@@ -51,8 +51,12 @@ const Article = () => {
   // 避免性能损失
   useEffect(() => {
     const loadList = async () => {
-      const res = http.get('/mp/articles', {params})
-      console.log(res)
+      const res = await http.get('/mp/articles', {params})
+      const {results, total_count} = res.data
+      setArticleData({
+        list: results,
+        count: total_count
+      })
     }
     loadList()
   }, [params])
@@ -117,20 +121,6 @@ const Article = () => {
     },
   ];
 
-  const data = [
-    {
-      id: "8218",
-      comment_count: 0,
-      cover: {
-        images: ["http://geek.itheima.net/resources/images/15.jpg"],
-      },
-      like_count: 0,
-      pubdate: "2019-03-11 09:00:00",
-      read_count: 2,
-      status: 2,
-      title: "wkwebview离线化加载h5资源解决方案",
-    },
-  ];
   return (
     <div>
       {/* 筛选区域 */}
@@ -178,8 +168,8 @@ const Article = () => {
         </Form>
       </Card>
       {/* 文章列表区域 */}
-      <Card title={`根据筛选条件共查询到 count 条结果：`}>
-        <Table rowKey="id" columns={columns} dataSource={data} />
+      <Card title={`根据筛选条件共查询到 ${articleData.count} 条结果：`}>
+        <Table rowKey="id" columns={columns} dataSource={articleData.list} />
       </Card>
     </div>
   );
