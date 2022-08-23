@@ -3,6 +3,7 @@ import Login from '@/pages/Login'
 import Layout from '@/pages/Layout'
 import {AuthComponent} from '@/components/AuthComponent'
 
+import './App.css'
 
 function App() {
   return (
