@@ -17,11 +17,24 @@ import "./index.scss";
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 
 import img404 from '@/assets/login.png'
+import { useEffect, useState } from "react";
+import {http} from '@/utils'
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
 const Article = () => {
+  // 频道列表管理
+  const [channelList, setChannelList] = useState([])
+
+  const loadChannelList = async () => {
+    const res = await http.get('/channels')
+    setChannelList(res.data.channels)
+  }
+
+  useEffect(() => {
+    loadChannelList()
+  }, [])
   const onFinish = (values) => {
     console.log(values);
   };
@@ -121,11 +134,9 @@ const Article = () => {
           <Form.Item label="频道" name="channel_id">
             <Select
               placeholder="请选择文章频道"
-              defaultValue="lucy"
-              style={{ width: 120 }}
+              style={{ width: 150 }}
             >
-              <Option value="jack">Jack</Option>
-              <Option value="lucy">Lucy</Option>
+              {channelList.map(channel => <Option key={channel.id} value={channel.id}>{channel.name}</Option>)}
             </Select>
           </Form.Item>
 
