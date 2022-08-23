@@ -1,5 +1,6 @@
 import { Layout, Menu, Popconfirm } from 'antd'
 import { HomeOutlined, DiffOutlined, EditOutlined, LogoutOutlined } from '@ant-design/icons'
+import { Outlet } from 'react-router-dom'
 import './index.scss'
 
 const { Header, Sider} = Layout
@@ -37,7 +38,10 @@ const GeekLayout = () => {
               </Menu.Item>
           </Menu>
         </Sider>
-        <Layout className='layout-content' style={{padding: 20}}>内容</Layout>
+        <Layout className='layout-content' style={{padding: 20}}>
+          {/* 二级路由 */}
+          <Outlet />
+        </Layout>
       </Layout>
     </Layout>
   )
