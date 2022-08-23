@@ -50,6 +50,7 @@ const Article = () => {
   // 而写到useEffect中 只会在依赖项发生变化的时候 函数才会进行重新初始化
   // 避免性能损失
   useEffect(() => {
+    console.log(1)
     const loadList = async () => {
       const res = await http.get('/mp/articles', {params})
       const {results, total_count} = res.data
@@ -88,6 +89,15 @@ const Article = () => {
     setParams({
       ...params,
       page
+    })
+  }
+
+  const delArticle = async (data) => {
+    await http.delete(`/mp/articles/${data.id}`)
+    // 刷新列表
+    setParams({
+      ...params,
+      page: 1
     })
   }
 
@@ -137,6 +147,7 @@ const Article = () => {
               danger
               shape="circle"
               icon={<DeleteOutlined />}
+              onClick={() => {delArticle(data)}}
             />
           </Space>
         );
