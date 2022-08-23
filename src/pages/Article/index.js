@@ -32,6 +32,31 @@ const Article = () => {
     setChannelList(res.data.channels)
   }
 
+  // 文章列表管理 统一管理数据 将来修改给setList传对象
+  const [list, setList] = useState({
+    list: [], // 文章列表
+    count: 0
+  })
+
+  // 文章参数管理
+  const [params, setParams] = useState({
+    page: 1,
+    per_page: 10
+  })
+  // 如果异步请求函数需要依赖一些数据的变化而需要重新执行
+  // 推荐写到内部
+  // 统一不抽离函数到外面 只要涉及到异步请求的函数 都放到useEffect内部
+  // 本质区别：写在外面每次组件更新都会重新进行函数初始化 本身就是一次性能消耗
+  // 而写到useEffect中 只会在依赖项发生变化的时候 函数才会进行重新初始化
+  // 避免性能损失
+  useEffect(() => {
+    const loadList = async () => {
+      const res = http.get('/mp/articles', {params})
+      console.log(res)
+    }
+    loadList()
+  }, [params])
+
   useEffect(() => {
     loadChannelList()
   }, [])
