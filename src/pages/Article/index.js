@@ -84,6 +84,13 @@ const Article = () => {
     })
   };
 
+  const pageChange = (page) => {
+    setParams({
+      ...params,
+      page
+    })
+  }
+
   const columns = [
     {
       title: "封面",
@@ -185,7 +192,15 @@ const Article = () => {
       </Card>
       {/* 文章列表区域 */}
       <Card title={`根据筛选条件共查询到 ${articleData.count} 条结果：`}>
-        <Table rowKey="id" columns={columns} dataSource={articleData.list} />
+        <Table
+          rowKey="id"
+          columns={columns}
+          dataSource={articleData.list}
+          pagination={{
+            pageSize: params.per_page,
+            total: articleData.count,
+            onChange: pageChange
+          }} />
       </Card>
     </div>
   );
