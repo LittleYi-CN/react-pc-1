@@ -65,7 +65,23 @@ const Article = () => {
     loadChannelList()
   }, [])
   const onFinish = (values) => {
-    console.log(values);
+    const {channel_id, status, date} = values
+    const _params = {}
+    if(status !== -1) {
+      _params.status = status
+    }
+    if(channel_id) {
+      _params.channel_id = channel_id
+    }
+    if(date) {
+      _params.begin_pubdate = date[0].format('YYYY-MM-DD')
+      _params.end_pubdate = date[1].format('YYYY-MM-DD')
+    }
+    // 修改params数据 引起接口的重新发送 对象的合并是一个整体覆盖 改了对象的整体引用
+    setParams({
+      ...params,
+      ..._params
+    })
   };
 
   const columns = [
@@ -135,10 +151,10 @@ const Article = () => {
         }
         style={{ marginBottom: 20 }}
       >
-        <Form onFinish={onFinish} initialValues={{ status: "" }}>
+        <Form onFinish={onFinish} initialValues={{ status: -1 }}>
           <Form.Item label="状态" name="status">
             <Radio.Group>
-              <Radio value={""}>全部</Radio>
+              <Radio value={-1}>全部</Radio>
               <Radio value={0}>草稿</Radio>
               <Radio value={1}>待审核</Radio>
               <Radio value={2}>审核通过</Radio>
