@@ -17,11 +17,20 @@ import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css'
 import { useStore } from "@/store";
 import {observer} from 'mobx-react-lite'
+import { useState } from "react";
 
 const { Option } = Select;
 
 const Publish = () => {
   const {channelStore} = useStore()
+  // 存放上传图片的列表
+  const [fileList, setFileList] = useState([])
+  const onUploadChange = ({fileList}) => {
+    // 采取受控的写法：在最后一次log里response
+    // 最终react state fileList中存放的数据有response.data.url
+    console.log(fileList)
+    setFileList(fileList)
+  }
   return (
     <div className="publish">
       <Card
@@ -69,6 +78,9 @@ const Publish = () => {
               listType="picture-card"
               className="avatar-uploader"
               showUploadList
+              action="http://geek.itheima.net/v1_0/upload"
+              fileList={fileList}
+              onChange={onUploadChange}
             >
               <div style={{ marginTop: 8 }}>
                 <PlusOutlined />
