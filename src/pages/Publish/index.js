@@ -8,9 +8,10 @@ import {
   Upload,
   Space,
   Select,
+  message,
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams,useNavigate } from "react-router-dom";
 import "./index.scss";
 
 import ReactQuill from "react-quill";
@@ -23,6 +24,7 @@ import { http } from "@/utils";
 const { Option } = Select;
 
 const Publish = () => {
+  const navigate = useNavigate()
   const {channelStore} = useStore()
   // 存放上传图片的列表
   const [fileList, setFileList] = useState([])
@@ -62,7 +64,14 @@ const Publish = () => {
       }
     }
     console.log(params)
-    await http.post('/mp/articles?draft=false', params)
+    if(id) {
+      await http.post(`/mp/articles/${id}?draft=false`, params)
+    }else {
+      await http.post('/mp/articles?draft=false', params)
+    }
+    // 跳转列表 提示用户
+    navigate('/article')
+    message.success(`${id?'更新':'发布'}发布成功`)
   }
 
   // 编辑功能
