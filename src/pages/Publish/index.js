@@ -17,7 +17,7 @@ import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css'
 import { useStore } from "@/store";
 import {observer} from 'mobx-react-lite'
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { http } from "@/utils";
 
 const { Option } = Select;
@@ -69,7 +69,19 @@ const Publish = () => {
   // 文案适配 路由参数id 判断条件
   const [params] = useSearchParams()
   const id = params.get('id')
-  console.log(id)
+
+  // 数据回填 id调用接口 1. 表单回填 2. 暂存列表 3. upload组件fileList
+  const form = useRef(null)
+  useEffect(() => {
+    const loadDetail = async () => {
+      const res = await http.get(`/mp/articles/${id}`)
+      form.current.setFieldsValue(res.data)
+    }
+    // 必须是编辑状态才可以发送请求
+    if(id) {
+      loadDetail()
+    }
+  }, [id])
   return (
     <div className="publish">
       <Card
@@ -87,6 +99,7 @@ const Publish = () => {
           wrapperCol={{ span: 16 }}
           initialValues={{ type: 1 }}
           onFinish={onFinish}
+          ref={form}
         >
           <Form.Item
             label="标题"
