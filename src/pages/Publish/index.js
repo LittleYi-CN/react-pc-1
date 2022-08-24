@@ -74,8 +74,16 @@ const Publish = () => {
   const form = useRef(null)
   useEffect(() => {
     const loadDetail = async () => {
-      const res = await http.get(`/mp/articles/${id}`)
-      form.current.setFieldsValue(res.data)
+      const {data} = await http.get(`/mp/articles/${id}`)
+      // 表单数据回填 实例方法
+      form.current.setFieldsValue({...data, type: data.cover.type})
+      // 调用setFileList方法回填upload
+      setFileList(data.cover.images.map(url => {
+        return {
+          url
+        }
+      }))
+      cacheImgList.current = data.cover.images
     }
     // 必须是编辑状态才可以发送请求
     if(id) {
