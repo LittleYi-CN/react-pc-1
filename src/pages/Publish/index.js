@@ -28,8 +28,13 @@ const Publish = () => {
   const onUploadChange = ({fileList}) => {
     // 采取受控的写法：在最后一次log里response
     // 最终react state fileList中存放的数据有response.data.url
-    console.log(fileList)
     setFileList(fileList)
+  }
+
+  // 切换图片
+  const [imgCount, setImgCount] = useState(1)
+  const onRadioChange = (e) => {
+    setImgCount(e.target.value)
   }
   return (
     <div className="publish">
@@ -67,25 +72,27 @@ const Publish = () => {
 
           <Form.Item label="封面">
             <Form.Item name="type">
-              <Radio.Group>
+              <Radio.Group onChange={onRadioChange}>
                 <Radio value={1}>单图</Radio>
                 <Radio value={3}>三图</Radio>
                 <Radio value={0}>无图</Radio>
               </Radio.Group>
             </Form.Item>
-            <Upload
-              name="image"
-              listType="picture-card"
-              className="avatar-uploader"
-              showUploadList
-              action="http://geek.itheima.net/v1_0/upload"
-              fileList={fileList}
-              onChange={onUploadChange}
-            >
-              <div style={{ marginTop: 8 }}>
-                <PlusOutlined />
-              </div>
-            </Upload>
+            {imgCount > 0 && (
+              <Upload
+                name="image"
+                listType="picture-card"
+                className="avatar-uploader"
+                showUploadList
+                action="http://geek.itheima.net/v1_0/upload"
+                fileList={fileList}
+                onChange={onUploadChange}
+              >
+                <div style={{ marginTop: 8 }}>
+                  <PlusOutlined />
+                </div>
+              </Upload>
+            )}
           </Form.Item>
           <Form.Item
             label="内容"
