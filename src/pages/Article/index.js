@@ -19,19 +19,15 @@ import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import img404 from '@/assets/login.png'
 import { useEffect, useState } from "react";
 import {http} from '@/utils'
+import { useStore } from "@/store";
+
+import {observer} from 'mobx-react-lite'
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
 const Article = () => {
-  // 频道列表管理
-  const [channelList, setChannelList] = useState([])
-
-  const loadChannelList = async () => {
-    const res = await http.get('/channels')
-    setChannelList(res.data.channels)
-  }
-
+  const {channelStore} = useStore()
   // 文章列表管理 统一管理数据 将来修改给setList传对象
   const [articleData, setArticleData] = useState({
     list: [], // 文章列表
@@ -62,9 +58,6 @@ const Article = () => {
     loadList()
   }, [params])
 
-  useEffect(() => {
-    loadChannelList()
-  }, [])
   const onFinish = (values) => {
     const {channel_id, status, date} = values
     const _params = {}
@@ -189,7 +182,7 @@ const Article = () => {
               placeholder="请选择文章频道"
               style={{ width: 150 }}
             >
-              {channelList.map(channel => <Option key={channel.id} value={channel.id}>{channel.name}</Option>)}
+              {channelStore.channelList.map(channel => <Option key={channel.id} value={channel.id}>{channel.name}</Option>)}
             </Select>
           </Form.Item>
 
@@ -221,4 +214,4 @@ const Article = () => {
   );
 };
 
-export default Article;
+export default observer(Article);

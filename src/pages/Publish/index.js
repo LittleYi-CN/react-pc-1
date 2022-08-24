@@ -15,10 +15,13 @@ import "./index.scss";
 
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css'
+import { useStore } from "@/store";
+import {observer} from 'mobx-react-lite'
 
 const { Option } = Select;
 
 const Publish = () => {
+  const {channelStore} = useStore()
   return (
     <div className="publish">
       <Card
@@ -49,7 +52,7 @@ const Publish = () => {
             rules={[{ required: true, message: "请选择文章频道" }]}
           >
             <Select placeholder="请选择文章频道" style={{ width: 400 }}>
-              <Option value={0}>推荐</Option>
+            {channelStore.channelList.map(channel => <Option key={channel.id} value={channel.id}>{channel.name}</Option>)}
             </Select>
           </Form.Item>
 
@@ -95,4 +98,4 @@ const Publish = () => {
   );
 };
 
-export default Publish;
+export default observer(Publish);
