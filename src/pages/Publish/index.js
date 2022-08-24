@@ -10,7 +10,7 @@ import {
   Select,
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import "./index.scss";
 
 import ReactQuill from "react-quill";
@@ -64,6 +64,12 @@ const Publish = () => {
     console.log(params)
     await http.post('/mp/articles?draft=false', params)
   }
+
+  // 编辑功能
+  // 文案适配 路由参数id 判断条件
+  const [params] = useSearchParams()
+  const id = params.get('id')
+  console.log(id)
   return (
     <div className="publish">
       <Card
@@ -72,7 +78,7 @@ const Publish = () => {
             <Breadcrumb.Item>
               <Link to="/home">首页</Link>
             </Breadcrumb.Item>
-            <Breadcrumb.Item>发布文章</Breadcrumb.Item>
+            <Breadcrumb.Item>{id ? '编辑': '发布'}文章</Breadcrumb.Item>
           </Breadcrumb>
         }
       >
@@ -138,7 +144,7 @@ const Publish = () => {
           <Form.Item wrapperCol={{ offset: 4 }}>
             <Space>
               <Button size="large" type="primary" htmlType="submit">
-                发布文章
+                {id? '编辑':'发布'}文章
               </Button>
             </Space>
           </Form.Item>
