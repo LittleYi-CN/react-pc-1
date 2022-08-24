@@ -18,6 +18,7 @@ import 'react-quill/dist/quill.snow.css'
 import { useStore } from "@/store";
 import {observer} from 'mobx-react-lite'
 import { useState } from "react";
+import { http } from "@/utils";
 
 const { Option } = Select;
 
@@ -36,6 +37,22 @@ const Publish = () => {
   const onRadioChange = (e) => {
     setImgCount(e.target.value)
   }
+  const onFinish = async (values) => {
+    // 数据的二次处理 重点是处理cover字段
+    const {channel_id, content, title, type} = values
+    const params = {
+      channel_id,
+      content,
+      title,
+      type,
+      cover: {
+        type,
+        images: fileList.map(item => item.response.data.url)
+      }
+    }
+    console.log(params)
+    await http.post('/mp/articles?draft=false', params)
+  }
   return (
     <div className="publish">
       <Card
@@ -51,7 +68,8 @@ const Publish = () => {
         <Form
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 16 }}
-          initialValues={{ type: 1, content: 'this is content' }}
+          initialValues={{ type: 1 }}
+          onFinish={onFinish}
         >
           <Form.Item
             label="标题"
