@@ -17,7 +17,7 @@ import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css'
 import { useStore } from "@/store";
 import {observer} from 'mobx-react-lite'
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { http } from "@/utils";
 
 const { Option } = Select;
@@ -26,16 +26,27 @@ const Publish = () => {
   const {channelStore} = useStore()
   // 存放上传图片的列表
   const [fileList, setFileList] = useState([])
+  // 使用useRef声明一个暂存仓库
+  const cacheImgList = useRef()
   const onUploadChange = ({fileList}) => {
     // 采取受控的写法：在最后一次log里response
     // 最终react state fileList中存放的数据有response.data.url
     setFileList(fileList)
+    cacheImgList.current = fileList
   }
 
   // 切换图片
   const [imgCount, setImgCount] = useState(1)
   const onRadioChange = (e) => {
     setImgCount(e.target.value)
+    // 从仓库里面取对应的图片数量 交给用来渲染图片列表的fileList
+    // 通过调用setFileList
+    if(e.target.value === 1) {
+      const img = cacheImgList.current ? cacheImgList.current[0] : []
+      setFileList([img])
+    } else if(e.target.value === 3) {
+      setFileList(cacheImgList.current)
+    }
   }
   const onFinish = async (values) => {
     // 数据的二次处理 重点是处理cover字段
