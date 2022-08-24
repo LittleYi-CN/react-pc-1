@@ -78,12 +78,9 @@ const Publish = () => {
       // 表单数据回填 实例方法
       form.current.setFieldsValue({...data, type: data.cover.type})
       // 调用setFileList方法回填upload
-      setFileList(data.cover.images.map(url => {
-        return {
-          url
-        }
-      }))
-      cacheImgList.current = data.cover.images
+      const formatImgList = data.cover.images.map(url => ({url}))
+      setFileList(formatImgList)
+      cacheImgList.current = formatImgList
     }
     // 必须是编辑状态才可以发送请求
     if(id) {
