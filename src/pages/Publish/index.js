@@ -33,8 +33,18 @@ const Publish = () => {
   const onUploadChange = ({fileList}) => {
     // 采取受控的写法：在最后一次log里response
     // 最终react state fileList中存放的数据有response.data.url
-    setFileList(fileList)
-    cacheImgList.current = fileList
+    const formatList = fileList.map(file => {
+      // 上传完毕 做数据处理
+      if(file.response) {
+        return {
+          url: file.response.data.url
+        }
+      }
+      // 否则在上传中时 不做处理
+      return file
+    })
+    setFileList(formatList)
+    cacheImgList.current = formatList
   }
 
   // 切换图片
@@ -60,12 +70,12 @@ const Publish = () => {
       type,
       cover: {
         type,
-        images: fileList.map(item => item.response.data.url)
+        images: fileList.map(item => item.url)
       }
     }
     console.log(params)
     if(id) {
-      await http.post(`/mp/articles/${id}?draft=false`, params)
+      await http.put(`/mp/articles/${id}?draft=false`, params)
     }else {
       await http.post('/mp/articles?draft=false', params)
     }
